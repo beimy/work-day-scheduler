@@ -22,6 +22,24 @@ function generateSchedule() {
         $('.container').append($rowDiv);
         console.log($rowDiv);
     }
+
+    setTimes();
+}
+
+function setTimes() {
+    // change time sections to actual times
+    $('.hour').each(function( index ) {
+        var timeStr = (index + 9);
+        if(timeStr < 13){
+            var str = timeStr + ' am';
+        }
+        else {
+            timeStr -= 12;
+            var str = timeStr + ' pm';
+        }
+        $(this).text(str);
+        console.log(index + ': ' + $(this).text() );
+    }) 
 }
 
 generateSchedule();
