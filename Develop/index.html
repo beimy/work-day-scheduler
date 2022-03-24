@@ -23,13 +23,28 @@
   </head>
 
   <body>
+    <!-- Header Section -->
     <header class="jumbotron">
       <h1 class="display-3">Work Day Scheduler</h1>
       <p class="lead">A simple calendar app for scheduling your work day</p>
       <p id="currentDay" class="lead"></p>
     </header>
+
     <div class="container">
       <!-- Timeblocks go here -->
+
+      <!-- timeblock -->
+      <div id="time-block" class="time-block row">
+        <!-- time -->
+        <div class="col-sm-1 hour">
+          <p id="time-slot">11am</p>
+        </div>
+        <!-- event desc -->
+        <p id="desc" class="col-sm-10 description past">Get this to work</p>
+        <!-- Save button -->
+        <button type="button" name="save-btn" class="col-sm-1 saveBtn"></button>
+      </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
