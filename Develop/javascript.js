@@ -1,5 +1,7 @@
 // Load in timetable from local or create a new one
 
+var $timeTable = $('.container')
+
 function generateSchedule() {
     for(i = 0; i < 9; i++){
         // create row div
@@ -20,7 +22,7 @@ function generateSchedule() {
 
         //append rowDiv after each section is added to it
         $('.container').append($rowDiv);
-        console.log($rowDiv);
+        // console.log($rowDiv);
     }
 
     setTimes();
@@ -38,11 +40,39 @@ function setTimes() {
             var str = timeStr + ' pm';
         }
         $(this).text(str);
-        console.log(index + ': ' + $(this).text() );
+        // console.log(index + ': ' + $(this).text() );
     }) 
 }
 
+function loadTasks() {
+    const keys = Object.keys(localStorage);
+    for (let key of keys) {
+        
+        // template literal for a key
+        // console.log(`${key}: ${localStorage.getItem(key)}`);
+        // console.log(key);
+
+        //get length of elements with .hour class
+        let loopLength = $timeTable.find('.hour').length;
+
+        // compare local key to each .hour element
+        for (var i = 0; i < loopLength; i++ ) {
+            let $hoursToCheck = $timeTable.find('.hour').eq(i);
+            if(key == $hoursToCheck.text()){
+                overwriteDescription(localStorage.getItem(key), 
+                    $timeTable.find('.description').eq(i));
+            }
+        };
+    }
+}
+
+function overwriteDescription(savedStr, descToChange) {
+    console.log('entered overwrite');
+    descToChange.text(savedStr);
+}
+
 generateSchedule();
+loadTasks();
 // Display current day
 
 // Color rows based on time of day
@@ -52,3 +82,23 @@ generateSchedule();
 // Return form to a <p> passing in new text
 
 // enable saving to local storage
+
+function saveBtnClk() {
+    //set ref to description
+    let myDesc = this.previousElementSibling;
+    myDesc.textContent = "there";
+    console.log(myDesc.textContent);
+
+    //set ref to time slot
+    let myTime = myDesc.previousElementSibling;
+    console.log(myTime.textContent);
+
+    //create new task obj to save
+    //var task = {savedDesc: myDesc.textContent, savedTime: myTime.textContent};
+    //console.log(task);
+
+    localStorage.setItem( myTime.textContent, myDesc.textContent );
+
+}
+
+$(".container button").on("click", saveBtnClk);
