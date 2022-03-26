@@ -2,7 +2,6 @@
 var $timeTable = $('.container');
 
 // Display current day
-var currentDate = moment().format();
 $('#currentDay').text("Today's Date: " + moment().format() );
 
 // Load in timetable from local or create a new one
@@ -74,18 +73,9 @@ function overwriteDescription(savedStr, descToChange) {
     descToChange.text(savedStr);
 }
 
-
-
-// Color rows based on time of day
-
-// Make descriptions clickable, turning them into a form
-
-// Return form to a <p> passing in new text
-
 function saveBtnClk() {
     //set ref to description
     let myDesc = this.previousElementSibling;
-    myDesc.textContent = "there";
     console.log(myDesc.textContent);
 
     //set ref to time slot
@@ -97,10 +87,44 @@ function saveBtnClk() {
     //console.log(task);
 
     localStorage.setItem( myTime.textContent, myDesc.textContent );
-
 }
+
+function descriptionClick() {
+    // get current text of p
+    console.log("entered description click");
+    var text = $(this)
+        .text()
+        .trim();
+
+    // convert p to textarea with text value
+    var textInput = $("<textarea>").addClass("col-sm-10 textarea").val(text);
+    $(this).replaceWith(textInput);
+
+    textInput.trigger("focus");
+}
+
+// Color rows based on time of day
 
 generateSchedule();
 loadTasks();
+
+// Make descriptions clickable, turning them into a form
+$('.description').on('click', descriptionClick);
+
+//Revert textarea to p
+$('.row').on("blur", "textarea", function() {
+    console.log('blur entered');
+    // get value of textarea
+    var text = $(this).val();
+    
+    // recreate p element
+    var taskP = $("<p>")
+        .addClass('col-sm-10 description')
+        .text(text)
+        .on('click', descriptionClick);
+
+    // replace textarea with p
+    $(this).replaceWith(taskP);
+});
 
 $(".container button").on("click", saveBtnClk);
