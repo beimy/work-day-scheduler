@@ -1,7 +1,11 @@
+//Global Variables
+var $timeTable = $('.container');
+
+// Display current day
+var currentDate = moment().format();
+$('#currentDay').text("Today's Date: " + moment().format() );
+
 // Load in timetable from local or create a new one
-
-var $timeTable = $('.container')
-
 function generateSchedule() {
     for(i = 0; i < 9; i++){
         // create row div
@@ -22,7 +26,6 @@ function generateSchedule() {
 
         //append rowDiv after each section is added to it
         $('.container').append($rowDiv);
-        // console.log($rowDiv);
     }
 
     setTimes();
@@ -71,17 +74,13 @@ function overwriteDescription(savedStr, descToChange) {
     descToChange.text(savedStr);
 }
 
-generateSchedule();
-loadTasks();
-// Display current day
+
 
 // Color rows based on time of day
 
 // Make descriptions clickable, turning them into a form
 
 // Return form to a <p> passing in new text
-
-// enable saving to local storage
 
 function saveBtnClk() {
     //set ref to description
@@ -100,5 +99,8 @@ function saveBtnClk() {
     localStorage.setItem( myTime.textContent, myDesc.textContent );
 
 }
+
+generateSchedule();
+loadTasks();
 
 $(".container button").on("click", saveBtnClk);
