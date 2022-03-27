@@ -16,11 +16,11 @@ function generateSchedule() {
         $rowDiv.append($timeSect);
 
         //create and append description sect to row div
-        $descSect = $('<p>Hello</p>').addClass('col-sm-10 description');
+        $descSect = $('<p>Click here to add task</p>').addClass('col-sm-10 description');
         $rowDiv.append($descSect);
 
         //create and append button to row div
-        $button = $('<button type="button" name="save-btn" class="col-sm-1 saveBtn">');
+        $button = $('<button type="button" name="save-btn" class="col-sm-1 saveBtn far fa-save">');
         $rowDiv.append($button);
 
         //append rowDiv after each section is added to it
@@ -82,10 +82,6 @@ function saveBtnClk() {
     let myTime = myDesc.previousElementSibling;
     console.log(myTime.textContent);
 
-    //create new task obj to save
-    //var task = {savedDesc: myDesc.textContent, savedTime: myTime.textContent};
-    //console.log(task);
-
     localStorage.setItem( myTime.textContent, myDesc.textContent );
 }
 
@@ -103,10 +99,43 @@ function descriptionClick() {
     textInput.trigger("focus");
 }
 
+
+
 // Color rows based on time of day
+function changeColors() {
+    const currentTime = moment().format("HH");
+    // const currentTime = 3;
+    console.log('Current Time is:' + currentTime );
+
+    let timeInt = parseInt(currentTime);
+
+    $('.hour').each(function() {
+        let hourInt = parseInt($(this).text());
+
+        var text = $(this).text();
+
+        if(text.includes("pm")) {
+            hourInt = hourInt + 12;
+        }
+
+        if(hourInt < timeInt) {
+            $(this).next().addClass("past");
+        }
+        if(hourInt == timeInt) {
+            $(this).next().addClass("present");
+        }
+        if(hourInt > timeInt) {
+            $(this).next().addClass("future");
+        }
+        
+        console.log("the hourInt is: " + hourInt );
+    })
+
+}
 
 generateSchedule();
 loadTasks();
+changeColors();
 
 // Make descriptions clickable, turning them into a form
 $('.description').on('click', descriptionClick);
@@ -123,8 +152,11 @@ $('.row').on("blur", "textarea", function() {
         .text(text)
         .on('click', descriptionClick);
 
+
     // replace textarea with p
     $(this).replaceWith(taskP);
+
+    changeColors();
 });
 
 $(".container button").on("click", saveBtnClk);
